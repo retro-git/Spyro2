@@ -33,10 +33,10 @@ game/basegame/SCUS_944.25: $(ISODUMP_DIR)
 	cp $(ISODUMP_DIR)/SCUS_944.25 game/basegame
 
 game/split.timestamp: game/basegame/SCUS_944.25
-	$(MAKE) -C game split_all
+	$(MAKE) -C game split_basegame
 
 game/basegame/build/SCUS_944.25: game/split.timestamp
-	$(MAKE) -C game
+	$(MAKE) -C game basegame
 
 build/spyro2$(DECOMP_SUFFIX).bin: game/basegame/build/SCUS_944.25
 	cp game/basegame/build/SCUS_944.25 $(ISODUMP_DIR)/SCUS_944.25$(DECOMP_SUFFIX)
