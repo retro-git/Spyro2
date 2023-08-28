@@ -16,4 +16,8 @@ ctx.c.m2c
 pah.conf
 *.out
 
+image_creation_timestamp
 SCUS_944.25
+*.bin
+isodump/
+*.timestamp
