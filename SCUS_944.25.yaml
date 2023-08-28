@@ -74,5 +74,6 @@ segments:
       - [0x4ABFC, c]
       - [0x4B358, bin]
       - [0x4B360, c]
-      - [0x5092C, bin, rest]
+      - [0x5092C, bin, data]
+      - [0x57538, bin, rest]
   - [0x57800] # end of file
