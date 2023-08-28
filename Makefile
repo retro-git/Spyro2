@@ -33,7 +33,7 @@ game/basegame/SCUS_944.25: $(ISODUMP_DIR)
 	cp $(ISODUMP_DIR)/SCUS_944.25 game/basegame
 
 game/split.timestamp: game/basegame/SCUS_944.25
-	$(MAKE) -C game split
+	$(MAKE) -C game split_all
 
 game/basegame/build/SCUS_944.25: game/split.timestamp
 	$(MAKE) -C game
