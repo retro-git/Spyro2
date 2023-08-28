@@ -4,9 +4,9 @@ options:
   # paths
   base_path:    .
   target_path:  SCUS_944.25
-  asm_path:     asm
-  asset_path:   assets
-  src_path:     src
+  asm_path:     spyro2/asm
+  asset_path:   spyro2/assets
+  src_path:     spyro2/src
   # compiler
   compiler: GCC # SN64
   # disasm/linker

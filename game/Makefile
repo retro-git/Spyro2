@@ -3,15 +3,15 @@ SPYRO2_BASENAME 	:= SCUS_944.25
 BUILD_DIR       	:= build
 TOOLS_DIR       	:= ../tools
 
-# SPYRO2_DIR      	:= spyro2
+SPYRO2_DIR      	:= spyro2
 
-SPYRO2_ASM_DIR  	:= asm
+SPYRO2_ASM_DIR  	:= $(SPYRO2_DIR)/asm
 SPYRO2_ASM_DIRS    	:= $(SPYRO2_ASM_DIR) $(SPYRO2_ASM_DIR)/data
 
-SPYRO2_C_DIR       	:= src
+SPYRO2_C_DIR       	:= $(SPYRO2_DIR)/src
 SPYRO2_C_DIRS      	:= $(SPYRO2_C_DIR)
 
-SPYRO2_ASSETS_DIR  	:= assets
+SPYRO2_ASSETS_DIR  	:= $(SPYRO2_DIR)/assets
 SPYRO2_BIN_DIRS    	:= $(SPYRO2_ASSETS_DIR)
 
 SPYRO2_TARGET      	:= $(BUILD_DIR)/$(SPYRO2_BASENAME)

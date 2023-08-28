@@ -5,7 +5,6 @@ MAKE 			:= make
 DECOMP_SUFFIX 	:= _decomp
 ISODUMP_DIR 	:= isodump
 
-# print current_dir
 .PHONY: all
 
 all: dirs container
