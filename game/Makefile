@@ -86,6 +86,7 @@ verify: $(SPYRO2_TARGET).ok
 
 split: $(SPYRO2_BASENAME).yaml
 	$(SPLAT) $<
+	touch $@.timestamp
 
 clean:
 	rm -rf $(BUILD_DIR) $(SPYRO2_ASM_DIR) $(SPYRO2_ASSETS_DIR)
