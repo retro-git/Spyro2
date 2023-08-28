@@ -1,0 +1,35 @@
+options:
+  platform:     psx
+  basename:     ovr0_title_and_loading.wad
+  # paths
+  base_path:    .
+  target_path:  ovr0_title_and_loading.wad
+  asm_path:     asm
+  asset_path:   assets
+  src_path:     src
+  # compiler
+  compiler: GCC # SN64
+  # disasm/linker
+  gp_value: 0x80066d38
+  symbol_addrs_path: symbol_addrs.ovr0_title_and_loading.wad.txt
+  undefined_funcs_auto_path: undefined_funcs_auto.ovr0_title_and_loading.wad.txt
+  undefined_syms_auto_path:  undefined_syms_auto.ovr0_title_and_loading.wad.txt
+
+  find_file_boundaries: yes
+
+  use_legacy_include_asm: no
+  migrate_rodata_to_functions: yes
+
+  auto_decompile_empty_functions: no
+
+  include_macro_inc: no # don't write macro.inc to rodata files
+
+  # section_order:
+  # - .rodata
+  # - .text
+  # - .data
+  # - .bss
+
+segments:
+  - [0x0, bin]
+  - [0x12800] # end of file

@@ -7,7 +7,7 @@ ISODUMP_DIR 	:= isodump
 
 .PHONY: all
 
-all: dirs container
+all: dirs container_and_build
 
 dirs:
 	mkdir -p build
@@ -18,8 +18,11 @@ image_creation.timestamp: Dockerfile
 	touch $@
 
 # Run docker container. Will build image if image_creation_timestamp is not present or is older than Dockerfile.
-container: image_creation.timestamp
+container_and_build: image_creation.timestamp
 	docker run --rm -it -v $(CURRENT_DIR):/spyro2 -w /spyro2 $(IMAGE_NAME) bash -c "$(MAKE) build/spyro2$(DECOMP_SUFFIX).bin && bash"
+
+container: image_creation.timestamp
+	docker run --rm -it -v $(CURRENT_DIR):/spyro2 -w /spyro2 $(IMAGE_NAME)
 
 $(ISODUMP_DIR): spyro2.bin
 	dumpsxiso spyro2.bin -x ./$(ISODUMP_DIR) -s ./$(ISODUMP_DIR)/spyro2.xml

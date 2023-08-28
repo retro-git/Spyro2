@@ -119,6 +119,9 @@ $(BUILD_DIR)/%.c.o: $(SUBDIR)/%.c
 # 	$(AS) $(AS_FLAGS) $@.s -o $@
 
 %.ok: $(SPYRO2_TARGET)
+	@echo SHA1
+	@echo $<
+	@echo "$$(cat $(SUBDIR)/$(notdir $<).sha1)  $<"
 	@echo "$$(cat $(SUBDIR)/$(notdir $<).sha1)  $<" | sha1sum --check
 	@touch $@
 
