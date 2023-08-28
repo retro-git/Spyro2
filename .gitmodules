@@ -7,3 +7,6 @@
 [submodule "tools/mkpsxiso"]
 	path = tools/mkpsxiso
 	url = https://github.com/Lameguy64/mkpsxiso
+[submodule "tools/wadtool"]
+	path = tools/wadtool
+	url = https://github.com/altro50/wadtool

@@ -26,17 +26,17 @@ $(ISODUMP_DIR): spyro2.bin
 	cp $(ISODUMP_DIR)/spyro2.xml $(ISODUMP_DIR)/spyro2$(DECOMP_SUFFIX).xml
 	sed -i 's/source="SCUS_944.25"/source="SCUS_944.25$(DECOMP_SUFFIX)"/g' $(ISODUMP_DIR)/spyro2$(DECOMP_SUFFIX).xml
 
-game/SCUS_944.25: $(ISODUMP_DIR)
-	cp $(ISODUMP_DIR)/SCUS_944.25 game
+game/basegame/SCUS_944.25: $(ISODUMP_DIR)
+	cp $(ISODUMP_DIR)/SCUS_944.25 game/basegame
 
-game/split.timestamp: game/SCUS_944.25
+game/split.timestamp: game/basegame/SCUS_944.25
 	$(MAKE) -C game split
 
-game/build/SCUS_944.25: game/split.timestamp
+game/basegame/build/SCUS_944.25: game/split.timestamp
 	$(MAKE) -C game
 
-build/spyro2$(DECOMP_SUFFIX).bin: game/build/SCUS_944.25
-	cp game/build/SCUS_944.25 $(ISODUMP_DIR)/SCUS_944.25$(DECOMP_SUFFIX)
+build/spyro2$(DECOMP_SUFFIX).bin: game/basegame/build/SCUS_944.25
+	cp game/basegame/build/SCUS_944.25 $(ISODUMP_DIR)/SCUS_944.25$(DECOMP_SUFFIX)
 	mkpsxiso $(ISODUMP_DIR)/spyro2$(DECOMP_SUFFIX).xml -o build/spyro2$(DECOMP_SUFFIX).bin -c build/spyro2$(DECOMP_SUFFIX).cue
 
 # build/spyro2_orig_rebuild.bin: build/iso/spyro2.xml
@@ -50,5 +50,5 @@ build/spyro2$(DECOMP_SUFFIX).bin: game/build/SCUS_944.25
 
 clean:
 	rm -rf build
-	rm -rf game/SCUS_944.25
+	rm -rf game/basegame/SCUS_944.25
 	$(MAKE) -C game clean

@@ -1,17 +1,19 @@
+SUBDIR 				:= basegame
+
 SPYRO2_BASENAME 	:= SCUS_944.25
 
-BUILD_DIR       	:= build
+BUILD_DIR       	:= $(SUBDIR)/build
 TOOLS_DIR       	:= ../tools
 
-SPYRO2_DIR      	:= spyro2
+# SPYRO2_DIR      	:= spyro2
 
-SPYRO2_ASM_DIR  	:= $(SPYRO2_DIR)/asm
+SPYRO2_ASM_DIR  	:= $(SUBDIR)/asm
 SPYRO2_ASM_DIRS    	:= $(SPYRO2_ASM_DIR) $(SPYRO2_ASM_DIR)/data
 
-SPYRO2_C_DIR       	:= $(SPYRO2_DIR)/src
+SPYRO2_C_DIR       	:= $(SUBDIR)/src
 SPYRO2_C_DIRS      	:= $(SPYRO2_C_DIR)
 
-SPYRO2_ASSETS_DIR  	:= $(SPYRO2_DIR)/assets
+SPYRO2_ASSETS_DIR  	:= $(SUBDIR)/assets
 SPYRO2_BIN_DIRS    	:= $(SPYRO2_ASSETS_DIR)
 
 SPYRO2_TARGET      	:= $(BUILD_DIR)/$(SPYRO2_BASENAME)
@@ -20,9 +22,10 @@ SPYRO2_S_FILES     	:= 	$(foreach dir,$(SPYRO2_ASM_DIRS),$(wildcard $(dir)/*.s))
 SPYRO2_C_FILES     	:= 	$(foreach dir,$(SPYRO2_C_DIRS),$(wildcard $(dir)/*.c))
 SPYRO2_BIN_FILES   	:= 	$(foreach dir,$(SPYRO2_BIN_DIRS),$(wildcard $(dir)/*.bin))
 
-SPYRO2_O_FILES     	:= 	$(foreach file,$(SPYRO2_S_FILES),$(BUILD_DIR)/$(file).o) \
-                   		$(foreach file,$(SPYRO2_C_FILES),$(BUILD_DIR)/$(file).o) \
-                   		$(foreach file,$(SPYRO2_BIN_FILES),$(BUILD_DIR)/$(file).o)
+SPYRO2_O_FILES := 	$(foreach file,$(SPYRO2_S_FILES),$(BUILD_DIR)/$(patsubst $(SUBDIR)/%,%,$(file)).o) \
+                 	$(foreach file,$(SPYRO2_C_FILES),$(BUILD_DIR)/$(patsubst $(SUBDIR)/%,%,$(file)).o) \
+                 	$(foreach file,$(SPYRO2_BIN_FILES),$(BUILD_DIR)/$(patsubst $(SUBDIR)/%,%,$(file)).o)
+
 
 MAKE            	:= make
 PYTHON          	:= python3
@@ -68,8 +71,8 @@ AS_FLAGS        	:= -Wa,-EL,-march=r3000,-mtune=r3000,-msoft-float,-no-pad-secti
 
 OBJCOPY_FLAGS   	:= -O binary
 
-SPYRO2_LD_FLAGS    	:= -Map $(SPYRO2_TARGET).map -T $(SPYRO2_BASENAME).ld \
-                   	-T undefined_syms_auto.$(SPYRO2_BASENAME).txt -T undefined_funcs_auto.$(SPYRO2_BASENAME).txt -T undefined_syms.$(SPYRO2_BASENAME).txt \
+SPYRO2_LD_FLAGS    	:= -Map $(SPYRO2_TARGET).map -T $(SUBDIR)/$(SPYRO2_BASENAME).ld \
+                   	-T $(SUBDIR)/undefined_syms_auto.$(SPYRO2_BASENAME).txt -T $(SUBDIR)/undefined_funcs_auto.$(SPYRO2_BASENAME).txt -T $(SUBDIR)/undefined_syms.$(SPYRO2_BASENAME).txt \
                    	--no-check-sections $(LD_FLAGS_EXTRA)
 
 # recipes
@@ -79,32 +82,34 @@ default: all
 all: dirs verify
 
 dirs:
-	$(foreach dir,$(SPYRO2_ASM_DIRS) $(SPYRO2_BIN_DIRS) $(SPYRO2_C_DIRS),$(shell mkdir -p $(BUILD_DIR)/$(dir)))
+	$(foreach dir,$(SPYRO2_ASM_DIRS) $(SPYRO2_BIN_DIRS) $(SPYRO2_C_DIRS),$(shell mkdir -p $(BUILD_DIR)/$(subst $(SUBDIR)/,,$(dir))))
 
 check: $(SPYRO2_BASENAME).ok
 verify: $(SPYRO2_TARGET).ok
 
-split: $(SPYRO2_BASENAME).yaml
+split: $(SUBDIR)/$(SPYRO2_BASENAME).yaml
 	$(SPLAT) $<
-	touch $@.timestamp
+	touch $(SUBDIR)/$@.timestamp
 
 clean:
 	rm -rf $(BUILD_DIR) $(SPYRO2_ASM_DIR) $(SPYRO2_ASSETS_DIR)
-	rm -rf *.timestamp $(SPYRO2_BASENAME).ld *_auto.$(SPYRO2_BASENAME).txt
+	rm -rf $(SUBDIR)/*.timestamp $(SUBDIR)/$(SPYRO2_BASENAME).ld $(SUBDIR)/*_auto.$(SPYRO2_BASENAME).txt
 
 $(SPYRO2_TARGET): $(SPYRO2_TARGET).elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) $< $@
 
 $(SPYRO2_TARGET).elf: $(SPYRO2_O_FILES)
-	$(LD) $(SPYRO2_LD_FLAGS) -o $@
+	@echo "HELLO"
+	@echo $@
+	$(LD) $(SPYRO2_LD_FLAGS) -L $(SUBDIR) -o $@
 
-$(BUILD_DIR)/%.s.o: %.s
+$(BUILD_DIR)/%.s.o: $(SUBDIR)/%.s
 	$(AS) -G0 -o $@ $<
 
-$(BUILD_DIR)/%.bin.o: %.bin
+$(BUILD_DIR)/%.bin.o: $(SUBDIR)/%.bin
 	$(LD) -r -b binary -o $@ $<
 
-$(BUILD_DIR)/%.c.o: %.c
+$(BUILD_DIR)/%.c.o: $(SUBDIR)/%.c
 	$(GCC) $(CC_FLAGS) $(SDATA_LIMIT) $(OPT_FLAGS) $(AS_FLAGS),$(AS_SDATA_LIMIT) $< -o $@
 
 # $(BUILD_DIR)/%.c.o: %.c
@@ -114,7 +119,7 @@ $(BUILD_DIR)/%.c.o: %.c
 # 	$(AS) $(AS_FLAGS) $@.s -o $@
 
 %.ok: $(SPYRO2_TARGET)
-	@echo "$$(cat $(notdir $<).sha1)  $<" | sha1sum --check
+	@echo "$$(cat $(SUBDIR)/$(notdir $<).sha1)  $<" | sha1sum --check
 	@touch $@
 
 $(BUILD_DIR)/%.a: %.a
