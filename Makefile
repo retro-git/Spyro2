@@ -6,7 +6,7 @@ TOOLS_DIR       	:= tools
 SPYRO2_DIR      	:= spyro2
 
 SPYRO2_ASM_DIR  	:= game/asm/$(SPYRO2_DIR)
-SPYRO2_ASM_DIRS    	:= $(SPYRO2_ASM_DIR)
+SPYRO2_ASM_DIRS    	:= $(SPYRO2_ASM_DIR) $(SPYRO2_ASM_DIR)/data
 
 SPYRO2_C_DIR       	:= game/src/$(SPYRO2_DIR)
 SPYRO2_C_DIRS      	:= $(SPYRO2_C_DIR)
