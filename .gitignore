@@ -21,3 +21,5 @@ SCUS_944.25
 *.bin
 isodump/
 *.timestamp
+
+*.wad
